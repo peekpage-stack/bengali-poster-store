@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-linen font-sans text-ink antialiased; }
+  h1, h2, h3, h4 { @apply font-serif font-medium tracking-tight; }
+  :focus-visible { outline: 2px solid #c2652a; outline-offset: 2px; }
+  ::selection { background: #fbe8d8; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+@layer components {
+  .page-x { @apply mx-auto w-full max-w-[1440px] px-5 md:px-10 lg:px-16; }
+  .section { @apply py-14 md:py-20; }
+
+  .btn { @apply inline-flex h-12 items-center justify-center gap-2 rounded px-6 text-sm font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply bg-terracotta text-white hover:bg-terracotta-dark; }
+  .btn-ink { @apply bg-ink text-linen hover:bg-terracotta; }
+  .btn-outline { @apply border border-ink/25 text-ink hover:border-ink; }
+  .btn-sm { @apply h-9 px-4 text-xs; }
+
+  .field { @apply h-11 w-full rounded border border-line bg-white px-3.5 text-sm text-ink placeholder:text-faint focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta; }
+  textarea.field { @apply h-auto py-3; }
+  .label { @apply mb-1.5 block text-xs font-semibold tracking-wide text-muted; }
+
+  .card { @apply rounded-xl border border-line/70 bg-white; }
+  .chip { @apply inline-flex shrink-0 items-center rounded-full border border-ink/15 px-4 py-1.5 text-xs font-semibold text-ink transition-colors hover:border-ink; }
+  .chip-active { @apply border-ink bg-ink text-linen hover:border-ink; }
+  .link-arrow { @apply inline-flex items-center gap-1.5 text-sm font-semibold text-terracotta hover:text-terracotta-dark; }
+  .tag { @apply inline-flex items-center rounded-lg bg-terracotta-tint px-2.5 py-1 text-[11px] font-bold tracking-wide text-terracotta-dark; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}

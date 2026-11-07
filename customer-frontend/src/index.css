@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #faf5ee;
+    color: #3a302a;
+    font-family: 'Manrope', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Custom subtle scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f2ece4;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d8d0c8;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9a9088;
+  }
+}
+
+@layer utilities {
+  /* Frosted Glassmorphism Styles */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(232, 226, 216, 0.85);
+  }
+
+  .glass-panel {
+    background: rgba(250, 245, 238, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(216, 208, 200, 0.65);
+  }
+
+  .glass-nav {
+    background: rgba(250, 245, 238, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-input {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid #d8d0c8;
+    transition: all 0.2s ease;
+  }
+  .glass-input:focus {
+    background: #ffffff;
+    border-color: #c2652a;
+    box-shadow: 0 0 0 1px #c2652a;
+  }
+
+  /* Gold Shimmer Effect for Authenticity Seals */
+  .gold-shimmer {
+    background: linear-gradient(120deg, rgba(200, 167, 93, 0.12) 0%, rgba(200, 167, 93, 0.3) 50%, rgba(200, 167, 93, 0.12) 100%);
+    background-size: 200% 100%;
+    animation: goldShimmer 4s infinite linear;
+  }
+
+  /* Responsive Physical Picture Frames */
+  .frame-teak {
+    border: 8px solid #6b4423;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45), 0 12px 28px -5px rgba(24, 20, 15, 0.35);
+  }
+  @media (min-width: 640px) {
+    .frame-teak {
+      border-width: 14px;
+    }
+  }
+
+  .frame-noir {
+    border: 8px solid #1a1918;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6), 0 12px 28px -5px rgba(0, 0, 0, 0.4);
+  }
+  @media (min-width: 640px) {
+    .frame-noir {
+      border-width: 14px;
+    }
+  }
+
+  .frame-oak {
+    border: 8px solid #c9a674;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3), 0 12px 28px -5px rgba(35, 28, 20, 0.3);
+  }
+  @media (min-width: 640px) {
+    .frame-oak {
+      border-width: 14px;
+    }
+  }
+
+  .frame-gold {
+    border: 8px solid #b8974a;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.35), 0 12px 28px -5px rgba(50, 40, 10, 0.3);
+  }
+  @media (min-width: 640px) {
+    .frame-gold {
+      border-width: 14px;
+    }
+  }
+
+  .frame-canvas {
+    border: 3px solid #ede8e0;
+    box-shadow: 0 10px 24px -5px rgba(40, 30, 20, 0.22);
+  }
+
+  /* Passe-Partout / Mat board */
+  .mat-board {
+    padding: 12px;
+    background: #fbf9f5;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.12);
+  }
+  @media (min-width: 640px) {
+    .mat-board {
+      padding: 24px;
+    }
+  }
+}
+
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
