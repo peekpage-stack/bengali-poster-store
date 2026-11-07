@@ -12,7 +12,7 @@ export default function Sidebar({ open, onClose }) {
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-[260px] flex-col border-r border-line bg-paper transition-transform lg:sticky lg:top-0 lg:z-0 lg:h-screen lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between px-6 py-6">
           <div>
-            <p className="font-serif text-2xl font-semibold leading-none">Atelier Studio</p>
+            <p className="font-serif text-2xl font-semibold leading-none">PeekPage Atelier</p>
             <p className="mt-1 font-bangla text-xs text-terracotta">অ্যাডমিন কন্ট্রোল</p>
           </div>
           <button onClick={onClose} className="lg:hidden" aria-label="Close menu"><X size={20} /></button>

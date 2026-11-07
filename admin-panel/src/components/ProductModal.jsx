@@ -1,12 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 import { ImagePlus, X } from 'lucide-react';
 
-const COLLECTIONS = ['Bengali Cinema', 'Urban Heritage', 'Tagore Literary', 'Folk & Festival', 'Coffee House Adda'];
+const COLLECTIONS = [
+  'Bengali Detective Legends',
+  'Bengali Cinema',
+  'Tagore Literary',
+  'Heritage & Kolkata',
+  'Folk & Festival'
+];
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 // One image upload + price/stock, as per the project plan.
 export default function ProductModal({ product, onSave, onClose }) {
-  const [form, setForm] = useState(product || { title: '', collection: COLLECTIONS[0], price: '', stock: '', status: 'draft', image: null });
+  const [form, setForm] = useState(
+    product || {
+      title: '',
+      bengaliTitle: '',
+      sku: 'PP-NEW-005',
+      collection: COLLECTIONS[0],
+      price: 69,
+      stock: 30,
+      status: 'live',
+      image: null,
+    }
+  );
   const [preview, setPreview] = useState(product?.image || null);
   const fileRef = useRef(null);
 
@@ -25,7 +42,15 @@ export default function ProductModal({ product, onSave, onClose }) {
   };
   const submit = (e) => {
     e.preventDefault();
-    onSave({ ...form, slug: slugify(form.title), price: Number(form.price), stock: Number(form.stock), image: preview, sold: form.sold ?? 0 });
+    onSave({
+      ...form,
+      slug: form.slug || slugify(form.title),
+      sku: form.sku || `PP-${slugify(form.title).slice(0, 3).toUpperCase()}-00${Math.floor(Math.random() * 90 + 10)}`,
+      price: Number(form.price) || 69,
+      stock: Number(form.stock) || 0,
+      image: preview,
+      sold: form.sold ?? 0,
+    });
   };
 
   return (
@@ -49,13 +74,40 @@ export default function ProductModal({ product, onSave, onClose }) {
           </div>
 
           <div className="grid content-start gap-4 sm:grid-cols-2">
-            <div className="sm:col-span-2"><label className="label" htmlFor="title">Poster title</label><input id="title" required className="field" value={form.title} onChange={set('title')} /></div>
-            <div className="sm:col-span-2"><label className="label" htmlFor="collection">Collection</label>
-              <select id="collection" className="field" value={form.collection} onChange={set('collection')}>{COLLECTIONS.map((c) => <option key={c}>{c}</option>)}</select></div>
-            <div><label className="label" htmlFor="price">Price (₹)</label><input id="price" type="number" min="0" required className="field" value={form.price} onChange={set('price')} /></div>
-            <div><label className="label" htmlFor="stock">Stock</label><input id="stock" type="number" min="0" required className="field" value={form.stock} onChange={set('stock')} /></div>
-            <div className="sm:col-span-2"><label className="label" htmlFor="status">Status</label>
-              <select id="status" className="field" value={form.status} onChange={set('status')}><option value="draft">Draft</option><option value="live">Live</option><option value="archived">Archived</option></select></div>
+            <div className="sm:col-span-2">
+              <label className="label" htmlFor="title">Poster title (English / Transliterated)</label>
+              <input id="title" required className="field" value={form.title} onChange={set('title')} placeholder="e.g. ফেলুদা (Feluda)" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="label" htmlFor="bengaliTitle">Bengali subtitle / Typography</label>
+              <input id="bengaliTitle" className="field" value={form.bengaliTitle || ''} onChange={set('bengaliTitle')} placeholder="e.g. প্রদোষ চন্দ্র মিত্র — প্রাইভেট ইনভেস্টিগেটর" />
+            </div>
+            <div>
+              <label className="label" htmlFor="sku">Catalog SKU</label>
+              <input id="sku" className="field" value={form.sku || ''} onChange={set('sku')} placeholder="PP-FEL-003" />
+            </div>
+            <div>
+              <label className="label" htmlFor="collection">Collection</label>
+              <select id="collection" className="field" value={form.collection} onChange={set('collection')}>
+                {COLLECTIONS.map((c) => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="label" htmlFor="price">Base A4 Price (₹)</label>
+              <input id="price" type="number" min="0" required className="field" value={form.price} onChange={set('price')} />
+            </div>
+            <div>
+              <label className="label" htmlFor="stock">Inventory Stock</label>
+              <input id="stock" type="number" min="0" required className="field" value={form.stock} onChange={set('stock')} />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="label" htmlFor="status">Catalogue Status</label>
+              <select id="status" className="field" value={form.status} onChange={set('status')}>
+                <option value="draft">Draft</option>
+                <option value="live">Live in Store</option>
+                <option value="archived">Archived Vault</option>
+              </select>
+            </div>
           </div>
         </div>
 

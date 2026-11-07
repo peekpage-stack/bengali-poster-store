@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
-import { AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { AlertTriangle, ArrowUpRight, Package } from 'lucide-react';
 import useAsync from '../hooks/useAsync';
 import { getOrders, getProducts, getStats } from '../services/adminService';
 import OrderRow from '../components/OrderRow.jsx';
+
+const LOW_STOCK_THRESHOLD = 25;
 
 export default function Dashboard() {
   const stats = useAsync(getStats);
   const products = useAsync(getProducts);
   const orders = useAsync(getOrders);
-  const low = (products || []).filter((p) => p.status === 'live' && p.stock <= 5);
+  const low = (products || []).filter((p) => p.status === 'live' && p.stock <= LOW_STOCK_THRESHOLD);
 
   return (
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="font-bangla text-terracotta">শুভ অপরাহ্ন</p>
-          <h1 className="text-4xl md:text-5xl">Atelier control</h1>
+          <p className="font-bangla text-terracotta">শুভ অপরাহ্ন · PeekPage Studio</p>
+          <h1 className="text-4xl md:text-5xl">Atelier Control</h1>
         </div>
         <Link to="/products" state={{ add: true }} className="btn btn-primary">Add new poster</Link>
       </div>
@@ -30,11 +32,65 @@ export default function Dashboard() {
         ))}
       </section>
 
+      {/* ── Low Stock Alert Widget ── */}
       {low.length > 0 && (
-        <div className="mt-6 flex items-start gap-3 rounded-xl border border-terracotta/30 bg-terracotta-tint p-4 text-sm" role="alert">
-          <AlertTriangle size={18} className="mt-0.5 shrink-0 text-terracotta" />
-          <p><b>Low stock:</b> {low.map((p) => `${p.title} (${p.stock} left)`).join(', ')}.</p>
-        </div>
+        <section className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5" aria-label="Low stock alert">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="grid place-items-center rounded-lg bg-amber-100 p-2">
+              <AlertTriangle size={18} className="text-amber-600" />
+            </span>
+            <div className="flex-1">
+              <h2 className="font-semibold text-amber-900 leading-tight">
+                Low Stock Alert
+                <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-600 text-[11px] font-bold text-white">
+                  {low.length}
+                </span>
+              </h2>
+              <p className="text-xs text-amber-700 mt-0.5">
+                {low.length} poster{low.length !== 1 ? 's' : ''} running low · threshold ≤ {LOW_STOCK_THRESHOLD} units
+              </p>
+            </div>
+            <Link to="/products" className="text-xs font-semibold text-amber-800 hover:underline underline-offset-2">
+              Manage inventory →
+            </Link>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {low.map((p) => {
+              const pct = Math.round((p.stock / (p.stock + (p.sold || 0))) * 100);
+              const urgent = p.stock <= 10;
+              return (
+                <div
+                  key={p.id}
+                  className={`flex items-center gap-3 rounded-xl border p-3 bg-white ${
+                    urgent ? 'border-red-200' : 'border-amber-100'
+                  }`}
+                >
+                  <span className="grid h-12 w-9 shrink-0 place-items-center overflow-hidden rounded-md bg-terracotta-tint shadow-xs border border-line text-[9px] text-terracotta-dark">
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <Package size={14} />
+                    )}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs font-semibold text-ink leading-tight">{p.title}</p>
+                    {p.sku && <p className="text-[10px] font-mono text-muted">{p.sku}</p>}
+                    <div className="mt-1.5 h-1.5 w-full rounded-full bg-amber-100 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${urgent ? 'bg-red-500' : 'bg-amber-400'}`}
+                        style={{ width: `${Math.max(pct, 4)}%` }}
+                      />
+                    </div>
+                    <p className={`mt-1 text-[10px] font-semibold ${urgent ? 'text-red-600' : 'text-amber-700'}`}>
+                      {p.stock} left{urgent ? ' · Reorder now' : ''}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
       )}
 
       <section className="card mt-8 overflow-hidden">
